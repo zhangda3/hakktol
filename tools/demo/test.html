@@ -1,0 +1,39 @@
+    <html>
+    <head>
+    <script>
+		var hD='0123456789ABCDEF';
+		function dec2hex(d) {
+			var h = hD.substr(d&15,1);
+			while (d>15) {
+				d>>=4;
+				h=hD.substr(d&15,1)+h;
+			}
+			return h;
+		}  	
+	
+      var openFile = function(event) {
+        var input = event.target;
+
+        var reader = new FileReader();
+        reader.onload = function(){
+          //var text = reader.result;
+		  var arr = reader.result;
+		  var uint8View = new Uint8Array(arr);
+		  var text = "";
+		  for (i=0; i<uint8View.length; i++) {
+			text += dec2hex(uint8View[i]);
+		  }
+          var node = document.getElementById('output');
+          node.innerText = text;		  
+        };
+        reader.readAsArrayBuffer(input.files[0]);
+      };
+    </script>
+    </head>
+    <body>
+    <input type='file' accept='text/plain' onchange='openFile(event)'><br>
+    <div id='output'>
+    ...
+    </div>
+    </body>
+    </html>
